@@ -22,7 +22,7 @@ Route::middleware('auth:api')->group(function () {
         'products' => 'ProductController',
     ]);
 
-    Route::apiResource('sales', 'SaleController')->only(['index', 'show', 'create']);
+    Route::apiResource('sales', 'SaleController')->only(['index', 'show', 'store']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
