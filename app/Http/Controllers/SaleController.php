@@ -17,7 +17,7 @@ class SaleController extends Controller
      */
     public function index()
     {
-        return Sale::with('customer')->paginate();
+        return Sale::orderBy('id', 'desc')->with('customer')->paginate();
     }
 
     /**
