@@ -14,17 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Product::with('category')->paginate();
     }
 
     /**
@@ -35,7 +25,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories'
+        ]);
+
+        $product = Product::create($request->all());
+
+        return response()->json($product, 201);
     }
 
     /**
@@ -46,18 +44,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
-    }
+        $product->load('category');
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
+        return $product;
     }
 
     /**
@@ -69,7 +58,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories'
+        ]);
+
+        $product->fill($request->all())->save();
+        return $product;
     }
 
     /**
@@ -80,6 +76,6 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
     }
 }
